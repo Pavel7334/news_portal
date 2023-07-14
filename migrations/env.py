@@ -6,11 +6,10 @@ from sqlalchemy import pool
 from alembic import context
 
 from config import DB_HOST, DB_PORT, DB_USER, DB_NAME, DB_PASS
-from src.news.models.models import metadata
 
 # this is the Alembic Config object, which provides
 # access to the values within the .ini file in use.
-
+from src.news.models.models import metadata
 
 config = context.config
 
@@ -70,7 +69,7 @@ def run_migrations_online() -> None:
 
     """
     connectable = engine_from_config(
-        config.get_section(config.config_ini_section, {}),
+        config.get_section(config.config_ini_section),
         prefix="sqlalchemy.",
         poolclass=pool.NullPool,
     )
