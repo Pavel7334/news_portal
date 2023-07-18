@@ -1,5 +1,9 @@
+from urllib.request import Request
+
 from fastapi import FastAPI, Depends
 from fastapi_users import FastAPIUsers
+from starlette import status
+from starlette.responses import JSONResponse
 
 from src.news.auth.auth import auth_backend
 from src.news.auth.database import User
@@ -45,3 +49,12 @@ def protected_route(user: User = Depends(current_user)):
 @app.get("/unprotected-route")
 def unprotected_route():
     return f"Hello, anonym"
+
+
+@app.exception_handler(Exception)
+async def base_exception_handler(request: Request, exc: Exception):
+    """Exception handler for all exceptions."""
+    return JSONResponse(
+        status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+        content={'detail': str(exc)},
+    )

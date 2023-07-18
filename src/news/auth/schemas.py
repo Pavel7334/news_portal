@@ -1,7 +1,5 @@
-import uuid
 from datetime import datetime
-
-from typing import Optional
+from typing import Optional, Union
 
 from fastapi_users import schemas
 from pydantic import BaseModel
@@ -33,9 +31,5 @@ class UserCreate(schemas.BaseUserCreate):
 class News(BaseModel):
     title: str
     description: str
-    created_at: datetime
-    updated_at: datetime
-    published_at: datetime
-    is_draft: bool
     user_id: int
 

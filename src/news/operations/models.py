@@ -32,9 +32,9 @@ news = Table(
     Column("id", Integer, primary_key=True),
     Column("title", String, nullable=False),
     Column("description", String, nullable=False),
-    Column("created_at", DateTime, nullable=False),
-    Column("updated_at", DateTime, nullable=False),
-    Column("published_at", DateTime, default=False, nullable=False),
-    Column("is_draft", Boolean, nullable=False),
+    Column("created_at", DateTime, default=datetime.utcnow, nullable=False),
+    Column("updated_at", DateTime, default=datetime.utcnow, nullable=False),
+    Column("published_at", DateTime, default=datetime.utcnow, nullable=False),
+    Column("is_draft", Boolean, default=True, nullable=False),
     Column("user_id", Integer, ForeignKey(user.c.id)),
 )
