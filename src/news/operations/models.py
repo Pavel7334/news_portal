@@ -1,40 +1,44 @@
 from datetime import datetime
 
-from sqlalchemy import MetaData, Table, Column, Integer, String, TIMESTAMP, ForeignKey, JSON, Boolean, DateTime
+import sqlalchemy as sa
+from sqlalchemy.ext.declarative import declarative_base
+from sqlalchemy import MetaData, ForeignKey
 
 metadata = MetaData()
 
-role = Table(
-    "role",
-    metadata,
-    Column("id", Integer, primary_key=True),
-    Column("name", String, nullable=False),
-    Column("permissions", JSON),
-)
+Base = declarative_base()
 
-user = Table(
-    "user",
-    metadata,
-    Column("id", Integer, primary_key=True),
-    Column("email", String, nullable=False),
-    Column("username", String, nullable=False),
-    Column("registered_at", TIMESTAMP, default=datetime.utcnow),
-    Column("role_id", Integer, ForeignKey(role.c.id)),
-    Column("hashed_password", String, nullable=False),
-    Column("is_active", Boolean, default=True, nullable=False),
-    Column("is_superuser", Boolean, default=False, nullable=False),
-    Column("is_verified", Boolean, default=False, nullable=False),
-)
 
-news = Table(
-    "news",
-    metadata,
-    Column("id", Integer, primary_key=True),
-    Column("title", String, nullable=False),
-    Column("description", String, nullable=False),
-    Column("created_at", DateTime, default=datetime.utcnow, nullable=False),
-    Column("updated_at", DateTime, default=datetime.utcnow, nullable=False),
-    Column("published_at", DateTime, default=datetime.utcnow, nullable=False),
-    Column("is_draft", Boolean, default=True, nullable=False),
-    Column("user_id", Integer, ForeignKey(user.c.id)),
-)
+class Role(Base):
+    __tablename__ = 'role'
+
+    id = sa.Column(sa.Integer, primary_key=True),
+    name = sa.Column(sa.String, nullable=False),
+    permissions = sa.Column(sa.JSON),
+
+
+class User(Base):
+    __tablename__ = 'user'
+
+    id = sa.Column(sa.Integer, primary_key=True),
+    email = sa.Column(sa.String, nullable=False),
+    username = sa.Column(sa.String, nullable=False),
+    registered_at = sa.Column(sa.TIMESTAMP, default=datetime.utcnow),
+    role_id = sa.Column(sa.Integer, ForeignKey('role.id')),
+    hashed_password = sa.Column(sa.String, nullable=False),
+    is_active = sa.Column(sa.Boolean, default=True, nullable=False),
+    is_superuser = sa.Column(sa.Boolean, default=False, nullable=False),
+    is_verified = sa.Column(sa.Boolean, default=False, nullable=False),
+
+
+class News(Base):
+    __tablename__ = 'news'
+
+    id = sa.Column(sa.Integer, primary_key=True),
+    title = sa.Column(sa.String, nullable=False),
+    description = sa.Column(sa.String, nullable=False),
+    created_at = sa.Column(sa.DateTime, default=datetime.utcnow, nullable=False),
+    updated_at = sa.Column(sa.DateTime, default=datetime.utcnow, nullable=False),
+    published_at = sa.Column(sa.DateTime, default=datetime.utcnow, nullable=False),
+    is_draft = sa.Column(sa.Boolean, default=True, nullable=False),
+    user_id = sa.Column(sa.Integer, ForeignKey('user.id')),
