@@ -14,7 +14,7 @@ class UserRead(schemas.BaseUser[int]):
     is_verified: bool = False
 
     class Config:
-        orm_mode = True
+        from_attributes = True
 
 
 class UserCreate(schemas.BaseUserCreate):
@@ -27,8 +27,18 @@ class UserCreate(schemas.BaseUserCreate):
     is_verified: Optional[bool] = False
 
 
-class News(BaseModel):
+class NewsSchemaBase(BaseModel):
     title: str
     description: str
     user_id: int
 
+
+class NewsSchema(NewsSchemaBase):
+    pass
+
+    # class Config:
+    #     from_attributes = True
+
+
+class NewsSchemaCreate(NewsSchemaBase):
+    pass
