@@ -34,7 +34,7 @@ async def get_news(
     news_id: int,
     service: NewsService = Depends(),
 ):
-    return service.get_news(news_id)
+    return await service.get_news(news_id)
 
 
 @router.post('/', response_model=NewsSchema)

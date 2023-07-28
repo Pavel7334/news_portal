@@ -20,9 +20,9 @@ class NewsService:
         return result.scalars().all()
 
     async def get_news(self, news_id: int) -> models.News:
-        query = select(News).where(News.c.id == news_id)
+        query = select(News).where(News.id == news_id)
         result = await self.session.execute(query)
-        if not query:
+        if not result:
             raise HTTPException(status_code=status.HTTP_404_NOT_FOUND)
         return result.scalar()
 
