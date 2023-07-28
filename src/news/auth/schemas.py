@@ -36,8 +36,8 @@ class NewsSchemaBase(BaseModel):
 class NewsSchema(NewsSchemaBase):
     pass
 
-    # class Config:
-    #     from_attributes = True
+    class Config:
+        from_attributes = True
 
 
 class NewsSchemaCreate(NewsSchemaBase):

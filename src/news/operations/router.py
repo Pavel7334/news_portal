@@ -8,7 +8,7 @@ from sqlalchemy.orm import Session
 
 from src.news.auth import schemas
 from src.news.auth.database import get_async_session
-from src.news.auth.schemas import NewsSchema
+from src.news.auth.schemas import NewsSchema, NewsSchemaCreate
 from src.news.operations.models import News
 
 router = APIRouter(
@@ -25,15 +25,26 @@ router = APIRouter(
 
 
 @router.get('/', response_model=list[NewsSchema])
-async def get_news(service: NewsService = Depends()):
+async def get_list_news(service: NewsService = Depends()):
     return await service.get_list()
+
+
+@router.get('/{news_id}', response_model=NewsSchema)
+async def get_news(
+    news_id: int,
+    service: NewsService = Depends(),
+):
+    return service.get_news(news_id)
 
 
 @router.post('/', response_model=NewsSchema)
 async def add_news(
-       service: NewsService = Depends(),
+    operation_data: NewsSchemaCreate,
+    service: NewsService = Depends(),
 ):
-    pass
+    return await service.create(operation_data)
+
+
 # @router.post('/')
 # async def add_news(new_news: NewsSchema, session: AsyncSession = Depends(get_async_session)):
 #     stmt = insert(News).values(**new_news.dict())
