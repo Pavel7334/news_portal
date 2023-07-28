@@ -42,3 +42,7 @@ class NewsSchema(NewsSchemaBase):
 
 class NewsSchemaCreate(NewsSchemaBase):
     pass
+
+
+class NewsSchemaUpdate(NewsSchemaBase):
+    pass
