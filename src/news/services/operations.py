@@ -1,6 +1,6 @@
 from fastapi import Depends, HTTPException, status
 from sqlalchemy import select, insert, delete
-from sqlalchemy.orm import Session, session
+from sqlalchemy.orm import Session
 
 from src.news.auth.database import get_async_session
 from src.news.auth.schemas import NewsSchema, NewsSchemaCreate, NewsSchemaUpdate
@@ -43,7 +43,14 @@ class NewsService:
         return query
 
     # async def delete(self, news_id: int):
+    #     stmt = await self._get_news(news_id)
+    #     await self.session.delete(stmt)
+    #     await self.session.commit()
+
     async def delete(self, news_id: int):
-        stmt = await self._get_news(news_id)
-        await self.session.delete(stmt)
+        query = delete(News).where(News.id == news_id).returning(News)
+        result = await self.session.execute(query)
         await self.session.commit()
+        if not result.scalar():
+            raise HTTPException(status_code=status.HTTP_404_NOT_FOUND)
+        return result.scalar()
