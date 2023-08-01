@@ -1,5 +1,5 @@
 from fastapi import APIRouter, Depends, Response, status
-from ..services.operations import NewsService
+from ..services.news import NewsService
 from src.news.auth.schemas import NewsSchema, NewsSchemaCreate, NewsSchemaUpdate
 
 

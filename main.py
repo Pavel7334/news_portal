@@ -6,11 +6,11 @@ from starlette import status
 from starlette.responses import JSONResponse
 
 from src.news.auth.auth import auth_backend
-from src.news.auth.database import User
 from src.news.auth.manager import get_user_manager
 from src.news.auth.schemas import UserRead, UserCreate
+from src.news.models.models import User
 
-from src.news.operations.router import router as router_operation
+from src.news.models.router import router as router_operation
 
 app = FastAPI(
     title="Новостной портал"

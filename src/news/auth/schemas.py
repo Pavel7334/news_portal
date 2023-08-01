@@ -1,4 +1,4 @@
-from typing import Optional
+from typing import Optional, List
 
 from fastapi_users import schemas
 from pydantic import BaseModel
@@ -46,3 +46,21 @@ class NewsSchemaCreate(NewsSchemaBase):
 
 class NewsSchemaUpdate(NewsSchemaBase):
     pass
+
+
+class CommentSchema(BaseModel):
+    id: int
+    text: str
+    news_id: int
+
+
+class ParentCommentSchema(BaseModel):
+    id: int
+    text: str
+    comment_id: int
+
+    children: List[CommentSchema] = []
+
+
+
+

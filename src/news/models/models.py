@@ -2,7 +2,7 @@ from datetime import datetime
 
 import sqlalchemy as sa
 from sqlalchemy.ext.declarative import declarative_base
-from sqlalchemy import MetaData, ForeignKey
+from sqlalchemy import MetaData, ForeignKey, Integer
 
 metadata = MetaData()
 
@@ -42,3 +42,14 @@ class News(Base):
     published_at = sa.Column(sa.DateTime, default=datetime.utcnow, nullable=False)
     is_draft = sa.Column(sa.Boolean, default=True, nullable=False)
     user_id = sa.Column(sa.Integer, ForeignKey('user.id'))
+
+
+class Comment(Base):
+    __tablename__ = 'comment'
+
+    id = sa.Column(sa.Integer, primary_key=True)
+    text = sa.Column(sa.String, nullable=False)
+    created_at = sa.Column(sa.DateTime, default=datetime.utcnow, nullable=False)
+    updated_at = sa.Column(sa.DateTime, default=datetime.utcnow, nullable=False)
+    news_id = sa.Column(sa.Integer, ForeignKey('news.id'))
+    parent_id = sa.Column(Integer, ForeignKey('comment.id'), nullable=True)

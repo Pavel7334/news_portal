@@ -3,10 +3,10 @@ from sqlalchemy import select, insert, delete
 from sqlalchemy.orm import Session
 
 from src.news.auth.database import get_async_session
-from src.news.auth.schemas import NewsSchema, NewsSchemaCreate, NewsSchemaUpdate
-from src.news.operations import models
+from src.news.auth.schemas import NewsSchemaCreate, NewsSchemaUpdate
+from src.news.models import models
 
-from src.news.operations.models import News
+from src.news.models.models import News
 
 
 class NewsService:
@@ -53,4 +53,3 @@ class NewsService:
         await self.session.commit()
         if not result.scalar():
             raise HTTPException(status_code=status.HTTP_404_NOT_FOUND)
-        return result.scalar()
