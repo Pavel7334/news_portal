@@ -49,13 +49,11 @@ class NewsSchemaUpdate(NewsSchemaBase):
 
 
 class CommentSchema(BaseModel):
-    id: int
     text: str
     news_id: int
 
 
 class ParentCommentSchema(BaseModel):
-    id: int
     text: str
     comment_id: int
 

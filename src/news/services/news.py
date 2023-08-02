@@ -17,7 +17,7 @@ class NewsService:
     async def _get_news(self, news_id: int) -> models.News:
         query = select(News).where(News.id == news_id)
         result = await self.session.execute(query)
-        if not result:
+        if not result.scalar():
             raise HTTPException(status_code=status.HTTP_404_NOT_FOUND)
         return result.scalar()
 
@@ -29,15 +29,15 @@ class NewsService:
     async def get_news(self, news_id: int) -> models.News:
         return await self._get_news(news_id)
 
-    async def create(self, operation_data: NewsSchemaCreate) -> models.News:
-        query = insert(models.News).values(**operation_data.dict()).returning(News)
+    async def create(self, news_data: NewsSchemaCreate) -> models.News:
+        query = insert(models.News).values(**news_data.dict()).returning(News)
         result = await self.session.execute(query)
         await self.session.commit()
         return result.fetchone()[0]
 
-    async def update(self, news_id: int, operation_data: NewsSchemaUpdate) -> models.News:
+    async def update(self, news_id: int, news_data: NewsSchemaUpdate) -> models.News:
         query = await self._get_news(news_id)
-        for field, value in operation_data:
+        for field, value in news_data:
             setattr(query, field, value)
         await self.session.commit()
         return query

@@ -10,7 +10,7 @@ from src.news.auth.manager import get_user_manager
 from src.news.auth.schemas import UserRead, UserCreate
 from src.news.models.models import User
 
-from src.news.models.router import router as router_operation
+from src.news.models.router import router as router_news
 
 app = FastAPI(
     title="Новостной портал"
@@ -35,7 +35,7 @@ app.include_router(
     tags=["Auth"],
 )
 
-app.include_router(router_operation)
+app.include_router(router_news)
 
 
 current_user = fastapi_users.current_user()
